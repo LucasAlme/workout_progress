@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   AddMoreExTitle,
   AddedMoreEx,
@@ -11,12 +11,17 @@ import {
   Title,
 } from "./styles";
 import Input from "../../components/input";
-import { ExercisesProps, WorkoutProps } from "../../interface/home";
+import { ExercisesProps } from "../../interface/home";
 import Button from "../../components/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateWorkout } from "../../redux/actions";
 import Toast from "react-native-simple-toast";
 import { ScrollView } from "react-native";
+import {
+  ButtonTitle,
+  TitleInput,
+  ToastMessageHome,
+} from "../../enums/homeEnum";
 
 interface WorkoutListProps {
   item: ExercisesProps;
@@ -32,7 +37,7 @@ function Home(): React.JSX.Element {
   const createWorkout = () => {
     const workout = { name: workoutName, exercises: exercises };
     dispatch(updateWorkout(workout));
-    Toast.show("Treino criado com sucesso!", Toast.LONG);
+    Toast.show(ToastMessageHome.CREATE_TRAINING_SUCCESS_MESSAGE, Toast.LONG);
     setExercises([]);
     setCurrentExercise({} as ExercisesProps);
     setWorkoutName("");
@@ -50,7 +55,7 @@ function Home(): React.JSX.Element {
     item.created = true;
 
     if (!item.name || !item.weight || !item.unit || !item.frequence) {
-      Toast.show("É preciso inserir todos os campos!", Toast.LONG);
+      Toast.show(ToastMessageHome.INSERT_ALL_INPUTS, Toast.LONG);
       return;
     }
     const updatedExercises = [...exercises];
@@ -58,12 +63,12 @@ function Home(): React.JSX.Element {
     if (exercises.length === 1) {
       updatedExercises.splice(0, 1, item);
       setExercises(updatedExercises);
-      Toast.show("Exercício criado com sucesso!", Toast.LONG);
+      Toast.show(ToastMessageHome.CREATE_WORKOUT_SUCCESS_MESSAGE, Toast.LONG);
       return;
     }
     updatedExercises.splice(index, 1, item);
     setExercises(updatedExercises);
-    Toast.show("Exercício criado com sucesso!", Toast.LONG);
+    Toast.show(ToastMessageHome.CREATE_WORKOUT_SUCCESS_MESSAGE, Toast.LONG);
   };
 
   return (
@@ -74,7 +79,7 @@ function Home(): React.JSX.Element {
         </Content>
 
         <Input
-          title="Nome do treino"
+          title={TitleInput.TITLE_WORKOUT}
           value={workoutName}
           onChangeText={(name) => setWorkoutName(name)}
           editabled
@@ -86,7 +91,7 @@ function Home(): React.JSX.Element {
           renderItem={({ item, index }: WorkoutListProps) => (
             <>
               <Input
-                title="Nome do exercício"
+                title={TitleInput.TITLE_EXERCISE}
                 containerStyle={{ paddingTop: 20 }}
                 value={item.name}
                 editabled={!exercises[index].created}
@@ -97,7 +102,7 @@ function Home(): React.JSX.Element {
 
               <ContainerRow>
                 <Input
-                  title="Peso"
+                  title={TitleInput.TITLE_WEIGHT}
                   containerStyle={{ width: "50%", paddingTop: 20 }}
                   value={item.weight}
                   editabled={!exercises[index].created}
@@ -107,7 +112,7 @@ function Home(): React.JSX.Element {
                 />
                 {/* Todo: Unit Picker */}
                 <Input
-                  title="Unidade"
+                  title={TitleInput.TITLE_UNIT}
                   containerStyle={{ width: "50%", paddingTop: 20 }}
                   value={item.unit}
                   editabled={!exercises[index].created}
@@ -117,7 +122,7 @@ function Home(): React.JSX.Element {
                 />
               </ContainerRow>
               <Input
-                title="Repetições"
+                title={TitleInput.TITLE_FREQUENCE}
                 containerStyle={{ width: "50%", paddingTop: 20 }}
                 value={item.frequence}
                 editabled={!exercises[index].created}
@@ -130,7 +135,9 @@ function Home(): React.JSX.Element {
                 <Button
                   disabled={exercises[index].created}
                   title={
-                    exercises[index].created ? "Criado!" : "Criar Exercicio"
+                    exercises[index].created
+                      ? ButtonTitle.CREATED
+                      : ButtonTitle.CREATE_EXERCISE
                   }
                   onPress={() => handleCreateExercise(currentExercise, index)}
                 />
@@ -145,7 +152,10 @@ function Home(): React.JSX.Element {
         </AddedMoreEx>
       </ScrollView>
       <ButtonContainer>
-        <Button title="Criar Treino" onPress={() => createWorkout()} />
+        <Button
+          title={ButtonTitle.CREATE_TRAINING}
+          onPress={() => createWorkout()}
+        />
       </ButtonContainer>
     </Container>
   );
