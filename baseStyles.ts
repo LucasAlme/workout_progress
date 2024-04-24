@@ -8,6 +8,7 @@ const themeConfig = {
     black: "#000000",
     transparent: "transparent",
     red: "#bb0e0e",
+    disabledGray: "#AAAAAA",
   },
 };
 

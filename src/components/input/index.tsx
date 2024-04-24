@@ -16,13 +16,20 @@ interface TextInputProps {
   onChangeText: (value: string) => void;
   error?: boolean;
   errorMessage?: string;
+  editabled?: boolean;
 }
 function Input(props: TextInputProps): React.JSX.Element {
   return (
     <InputContainer style={props.containerStyle}>
-      <TitleText>{props.title}</TitleText>
+      <TitleText editable={props.editabled ? true : false}>
+        {props.title}
+      </TitleText>
       <Container width={props.width}>
-        <InputText value={props.value} onChangeText={props.onChangeText} />
+        <InputText
+          value={props.value}
+          onChangeText={props.onChangeText}
+          editable={props.editabled}
+        />
       </Container>
       {props.error && <ErrorText>{props.errorMessage}</ErrorText>}
     </InputContainer>
