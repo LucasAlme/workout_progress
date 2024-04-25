@@ -29,14 +29,14 @@ function Routes(): React.JSX.Element {
             tabBarIcon: () => <Icon name="home" type="feather" />,
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Metrics"
           component={Metrics}
           options={{
             tabBarLabel: "Métricas",
             tabBarIcon: () => <Icon name="straighten" type="material" />,
           }}
-        />
+        /> */}
         <Tab.Screen
           name="History"
           component={History}
